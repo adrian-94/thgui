@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/Users/markstamnes/thgui-master/th.py", line 84, in browse_file
+    self.textEdit.append(str(os.path.basename(p)))
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/posixpath.py", line 121, in basename
+    i = p.rfind('/') + 1
+AttributeError: 'QString' object has no attribute 'rfind'
+Traceback (most recent call last):
+  File "/Users/markstamnes/thgui-master/th.py", line 98, in browse_file2
+    self.textEdit_2.append(str(os.path.basename(p)))
+  File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/posixpath.py", line 121, in basename
+    i = p.rfind('/') + 1
+AttributeError: 'QString' object has no attribute 'rfind'
+
