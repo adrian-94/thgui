@@ -4,8 +4,10 @@ Created on Wed May  4 17:51:08 2016
 
 @author: DEEPN
 """
+"""
 import sip
 sip.setapi('QString', 2)
+"""
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QFileDialog
 import subprocess
@@ -23,6 +25,7 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
     R4=[]
     R5=[]
     R6=[]
+    R7=[]
     #command=""
          
     def __init__(self): #constructor
@@ -56,12 +59,13 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
     def selected_item(self):
        global R5
        global R4
+       global R7
        for p in self.listWidget.selectedItems():
            R5= os.path.join(str(R4),str(p.text()))#R4 from select_folder2
        for file in os.listdir(R5):
           if file.endswith(".rev.1.bt2"):
               R4=file.strip("rev.1.bt2")
-       R5=R5+"/"+R4
+       R7=str(R5+"/"+R4)
        
               
               
@@ -80,7 +84,7 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
                                                                     os.path.expanduser("~"),
                                                                    QtGui.QFileDialog.ShowDirsOnly))
         global R4
-        R4=str(folder_2)
+        R4=folder_2
         
         sub=next(os.walk(folder_2))[1]     
         for p in sub:
@@ -155,8 +159,7 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
         for p in f_3:
            self.textEdit_3.append(str(os.path.basename(p)))
         global R3
-        R3=f_3
-        
+        R3=f_3 
     #def tophat(self,files):
      #   for path in files:
       #      print f
@@ -165,10 +168,10 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
     def tophat(self):
         command1=""
         command2=str(R2[0])
-        command3=""
         command3=str(R3[0])
-        command4=str(R5[0])
-        output_folder=str(R6[0])
+        command4=str(R7)
+        output_folder=R6
+        
          #   command.append("")
         #subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -G /Volumes/LaCie/tophatgui/mm10/mm10Genes.gtf -o /Volumes/LaCie/tophatgui/tophat /Volumes/LaCie/tophatgui/mm10/mm10 /Volumes/LaCie/tophatgui/A_R1_.fastq /Volumes/LaCie/tophatgui/A_R2_.fastq', shell=True)
         if command3 is "":
@@ -181,6 +184,10 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
                 for x in range(0,len(R1)):
                   command1=str(R1[x])
                   command2=str(R2[x])
+                  print command1
+                  print output_folder
+                  print command4
+                  print command2
                   subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -o '+output_folder+' '+command4+' '+ command1+' '+command2, shell=True)
         elif command2 is "": 
             for x in range(0,len(R1)):
