@@ -4,7 +4,8 @@ Created on Wed May  4 17:51:08 2016
 
 @author: DEEPN
 """
-
+import sip
+sip.setapi('QString', 2)
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QFileDialog
 import subprocess
@@ -19,7 +20,10 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
     R1=[]  
     R2=[]
     R3=[]
-    command=""
+    R4=[]
+    R5=[]
+    R6=[]
+    #command=""
          
     def __init__(self): #constructor
     
@@ -36,13 +40,55 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
         self.radioButton_4.clicked.connect(self.no_annotation)
         #self.pushButton_5.clicked.connect(self.tophat, path, f_1)
         self.pushButton_5.clicked.connect(self.tophat)
+        self.pushButton_7.clicked.connect(self.select_folder)
+        self.pushButton_8.clicked.connect(self.select_folder_2)
         self.textEdit.setReadOnly
         self.textEdit_3.setReadOnly
         self.textEdit_2.setReadOnly
+        self.lineEdit_3.setReadOnly
+        self.lineEdit.setText("accepted_hits.bm")
+        self.lineEdit_2.setText("unmapped.bm")
+        self.listWidget.itemClicked.connect(self.selected_item)       
         
         
         
         
+    def selected_item(self):
+       global R5
+       global R4
+       for p in self.listWidget.selectedItems():
+           R5= os.path.join(str(R4),str(p.text()))#R4 from select_folder2
+       for file in os.listdir(R5):
+          if file.endswith(".rev.1.bt2"):
+              R4=file.strip("rev.1.bt2")
+       R5=R5+"/"+R4
+       
+              
+              
+    def select_folder(self)  :
+        folder=str(QtGui.QFileDialog.getExistingDirectory(QtGui.QFileDialog(), "Locate Output Folder",
+                                                                    os.path.expanduser("~"),
+                                                                    QtGui.QFileDialog.ShowDirsOnly))
+                                                            
+        self.lineEdit_3.setText(os.path.basename(folder))  
+        global R6
+        R6=str(folder)
+        
+        
+    def select_folder_2(self)  :
+        folder_2=str(QtGui.QFileDialog.getExistingDirectory(QtGui.QFileDialog(), "Locate DNA Reference File Folder",
+                                                                    os.path.expanduser("~"),
+                                                                   QtGui.QFileDialog.ShowDirsOnly))
+        global R4
+        R4=str(folder_2)
+        
+        sub=next(os.walk(folder_2))[1]     
+        for p in sub:
+           self.listWidget.addItem(p)
+        #if self.listWidget.count()>0:
+         # self.listWidget.setItemSelected(,True)   
+                                                                    
+                                                              
     def single_end(self):
         self.label_5.hide()
         self.pushButton_2.hide()
@@ -121,6 +167,8 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
         command2=str(R2[0])
         command3=""
         command3=str(R3[0])
+        command4=str(R5[0])
+        output_folder=str(R6[0])
          #   command.append("")
         #subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -G /Volumes/LaCie/tophatgui/mm10/mm10Genes.gtf -o /Volumes/LaCie/tophatgui/tophat /Volumes/LaCie/tophatgui/mm10/mm10 /Volumes/LaCie/tophatgui/A_R1_.fastq /Volumes/LaCie/tophatgui/A_R2_.fastq', shell=True)
         if command3 is "":
@@ -128,21 +176,21 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
                 for x in range(0,len(R1)):
                     command1=str(R1[x])
                     command2=str(R2[x])
-                    subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -o /Volumes/LaCie/tophatgui/tophat /Volumes/LaCie/tophatgui/mm10/mm10 '+ command1, shell=True)
+                    subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -o '+output_folder+' '+command4+' '+command1, shell=True)
             else:
                 for x in range(0,len(R1)):
                   command1=str(R1[x])
                   command2=str(R2[x])
-                  subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -o /Volumes/LaCie/tophatgui/tophat /Volumes/LaCie/tophatgui/mm10/mm10 '+ command1+' '+command2, shell=True)
+                  subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -o '+output_folder+' '+command4+' '+ command1+' '+command2, shell=True)
         elif command2 is "": 
             for x in range(0,len(R1)):
                 command1=str(R1[x])
-                subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -G '+command3+' -o /Volumes/LaCie/tophatgui/tophat /Volumes/LaCie/tophatgui/mm10/mm10 '+ command1, shell=True)
+                subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -G '+command3+' -o '+output_folder+' '+command4+' '+ command1, shell=True)
         else:  
           for x in range(0,len(R1)):
             command1=str(R1[x])
             command2=str(R2[x])
-            subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -G '+command3+' -o /Volumes/LaCie/tophatgui/tophat /Volumes/LaCie/tophatgui/mm10/mm10 '+ command1+' '+command2, shell=True)
+            subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -G '+command3+' -o '+output_folder+' '+command4+' '+ command1+' '+command2, shell=True)
         
 if __name__ == "__main__":#runs the code if called as a main function
     app=QtGui.QApplication(sys.argv)
