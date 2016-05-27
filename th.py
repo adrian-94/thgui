@@ -4,10 +4,9 @@ Created on Wed May  4 17:51:08 2016
 
 @author: DEEPN
 """
-"""
 import sip
 sip.setapi('QString', 2)
-"""
+
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QFileDialog
 import subprocess
@@ -49,8 +48,8 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
         self.textEdit_3.setReadOnly
         self.textEdit_2.setReadOnly
         self.lineEdit_3.setReadOnly
-        self.lineEdit.setText("accepted_hits.bm")
-        self.lineEdit_2.setText("unmapped.bm")
+        self.lineEdit.setText("accepted_hits.bam")
+        self.lineEdit_2.setText("unmapped.bam")
         self.listWidget.itemClicked.connect(self.selected_item)       
         
         
@@ -77,6 +76,7 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
         self.lineEdit_3.setText(os.path.basename(folder))  
         global R6
         R6=str(folder)
+       
         
         
     def select_folder_2(self)  :
@@ -166,13 +166,15 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
           #subprocess.call('tophat2 -p 3 --b2-very-sensitive -G /LaCie/tophatgui/mm10Genes.gtf -o
     # $file4 /LaCie/tophatgui/mm10/mm10 $file1 $file2', shell=True)  
     def tophat(self):
-        command1=""
+        """command1=""
         command2=str(R2[0])
         command3=str(R3[0])
-        command4=str(R7)
+        command4=str(R7)"""
         output_folder=R6
+        for filename in os.listdir(output_folder):
+          if filename=="unmapped.bam":
+           os.rename(os.path.join(output_folder,filename), os.path.join(output_folder,filename).replace("unmapped",str(self.lineEdit_2.text())))
         
-         #   command.append("")
         #subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -G /Volumes/LaCie/tophatgui/mm10/mm10Genes.gtf -o /Volumes/LaCie/tophatgui/tophat /Volumes/LaCie/tophatgui/mm10/mm10 /Volumes/LaCie/tophatgui/A_R1_.fastq /Volumes/LaCie/tophatgui/A_R2_.fastq', shell=True)
         if command3 is "":
             if command2 is "":
@@ -198,6 +200,7 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
             command1=str(R1[x])
             command2=str(R2[x])
             subprocess.call('/Volumes/Lacie/Tophat2final/tophat2 -p 3 --b2-very-sensitive -G '+command3+' -o '+output_folder+' '+command4+' '+ command1+' '+command2, shell=True)
+        
         
 if __name__ == "__main__":#runs the code if called as a main function
     app=QtGui.QApplication(sys.argv)
