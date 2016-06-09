@@ -9,7 +9,7 @@ sip.setapi('QString', 2)
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import QFileDialog
-from shutil import copyfile,copytree
+from shutil import copy2,copytree
 import subprocess
 import os
 import sys
@@ -249,10 +249,10 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
              for filename in os.listdir(R6):     #output folder to work folder  
                  if filename=="accepted_hits.bam":
                      src=os.path.join(R6,filename)
-                     copyfile(src, directory)
+                     copy2(src, directory)
                  if filename=="unmapped.bam":
                      src=os.path.join(R6,filename)
-                     copyfile(src, directory)  
+                     copy2(src, directory)  
                  if filename=="logs":
                      src=os.path.join(R6,filename)
                      d=os.path.join(directory,"logs")
