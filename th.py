@@ -247,7 +247,7 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
                      pass
            
              for filename in os.listdir(R6):     #output folder to work folder  
-                 if filename=="unmapped.bam":
+                 if filename=="accepted_hits.bam":
                      src=os.path.join(R6,filename)
                      copyfile(src, directory)
                  if filename=="unmapped.bam":
@@ -255,7 +255,8 @@ class MainWindow(QtGui.QMainWindow,th_ui_2.Ui_MainWindow):
                      copyfile(src, directory)  
                  if filename=="logs":
                      src=os.path.join(R6,filename)
-                     copytree(src, directory,symlinks=False, ignore=None)
+                     d=os.path.join(directory,"logs")
+                     copytree(src, d)
                      
                      
 if __name__ == "__main__":#runs the code if called as a main function

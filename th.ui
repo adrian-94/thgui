@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>987</height>
+    <width>1400</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,7 +85,7 @@
      <item row="6" column="2">
       <widget class="QPushButton" name="pushButton_8">
        <property name="text">
-        <string>Select DNA Files Folder</string>
+        <string>Select DNA Database Folder</string>
        </property>
       </widget>
      </item>
@@ -207,7 +207,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Pair End</string>
+         <string>Paired End</string>
         </property>
        </widget>
       </widget>
